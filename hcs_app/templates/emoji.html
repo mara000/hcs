@@ -122,20 +122,6 @@ function handleLayoutChange(button) {
   let layoutName;
 
   switch (button) {
-    case "{shift}":
-    case "{default}":
-      layoutName = currentLayout === "default" ? "shift" : "default";
-      break;
-
-    case "{alt}":
-    case "{altright}":
-      layoutName = currentLayout === "alt" ? "default" : "alt";
-      break;
-
-    case "{smileys}":
-      layoutName = currentLayout === "smileys" ? "default" : "smileys";
-      break;
-
     default:
       break;
   }

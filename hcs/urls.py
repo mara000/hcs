@@ -19,7 +19,8 @@ from hcs_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.homepage),
+    path('', views.homepage, name="homepage"),
     path('begin-experiment/', views.randomExperiment, name="random_experiment"),
+    path('show-display/<str:display_name>', views.showDisplay, name="show_display"),
 
 ]

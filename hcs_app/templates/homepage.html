@@ -36,16 +36,15 @@
 
 
             
-
-
-
-
-
-
-
-
-
-        </div>
+  <div class="container text-center mt-5">
+    <ul class="list-group">
+      <li class="list-group-item bg-dark" style="color: white;">Views (remove for experiment)</li>
+      <li class="list-group-item"><a href="{% url 'homepage' %}">Home Page</a></li>
+      <li class="list-group-item"><a href="{% url 'show_display' 'emojiandalpha' %}">Emoji & Alpha</a></li>
+      <li class="list-group-item"><a href="{% url 'show_display' 'emoji' %}">Emoji</a></li>
+      <li class="list-group-item"><a href="{% url 'show_display' 'alpha' %}">Alpha</a></li>
+    </ul>
+  </div>
 
 
     </div>

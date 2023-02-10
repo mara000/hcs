@@ -20,4 +20,6 @@ from hcs_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.homepage),
+    path('begin-experiment/', views.randomExperiment, name="random_experiment"),
+
 ]

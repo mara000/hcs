@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from random import randrange
+from hcs_app.models import User
 # Create your views here.
 
 def homepage(request):
@@ -22,5 +23,15 @@ def showDisplay(request, display_name):
     
     
     return render(request, "homepage.html")
+
+
+def receiveData(request):
+    if request.method == "POST":
+        newuser = User(
+            firstname=request.POST['name'],
+            password=request.POST['pass'],
+        )
+        newuser.save()
+
 
 

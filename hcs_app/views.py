@@ -1,17 +1,50 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from random import randrange
-from hcs_app.models import User
-# Create your views here.
+from hcs_app.models import Participant
+from django.contrib import messages
+from django.http import HttpResponseBadRequest
 
 def homepage(request):
-    return render(request, "homepage.html")
+    storage = messages.get_messages(request)
+    context_dict = {}
+    context_dict["show_response"] = storage
+
+    return render(request, "homepage.html", context=context_dict)
 
 
 def randomExperiment(request):
-    pages = ['emoji.html', 'alphanumeric.html', 'emojiandalpha.html']
-    random_page = pages[randrange(3)]
+    if request.method == "POST":
+        if request.POST['pages'] == "":
 
-    return render(request, random_page)
+            if request.POST['p_name']:
+                newuser = Participant(
+                    firstname = request.POST['p_name'],
+                    password = request.POST['p_pass'],
+                )
+                newuser.save()
+                print("[+] Created New USER: " + str(request.POST['p_name']))
+
+            messages.success(request, 'Experiment is Over. Results have been saved successfully.')
+            return redirect("homepage")        
+        
+        pages = request.POST['pages'].split(",")
+
+        if request.POST['p_name'] != "nosubmit":
+            newuser = Participant(
+                firstname = request.POST['p_name'],
+                password = request.POST['p_pass'],
+            )
+            newuser.save()
+            print("[+] Created New USER: " + str(request.POST['p_name']))
+
+        random_page = pages[randrange(len(pages))]
+        pages.remove(random_page)
+        context_dict = {}
+        context_dict['remaining_pages'] = ','.join(map(str, pages))
+
+        return render(request, random_page, context_dict)
+    else:
+        return HttpResponseBadRequest("Error. ")
 
 def showDisplay(request, display_name):
     if display_name == "emoji":
@@ -25,13 +58,12 @@ def showDisplay(request, display_name):
     return render(request, "homepage.html")
 
 
-def receiveData(request):
-    if request.method == "POST":
-        newuser = User(
-            firstname=request.POST['name'],
-            password=request.POST['pass'],
-        )
-        newuser.save()
+def showResults(request):
+    results = Participant.objects.all()
+    context_dict = {}
+    context_dict['results'] = results
+    return render(request, "results.html", context=context_dict)
+
 
 
 

@@ -5,6 +5,7 @@
 
 <head>
     <title>HCS Group AU - Experiment</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -28,16 +29,17 @@
         </div>
         <div class="row mt-4">
             <div class="col-6 offset-md-3 border rounded-top ps-2 pt-2 pb-4">
-            <form method="POST">
+            <form method="POST" action="{% url 'random_experiment' %}">
               {% csrf_token %}
+              <input type="hidden" name="pages" value="{{ remaining_pages }}" />
                 <div class="form-group">
                   <label for="exampleInputEmail1">Name</label>
-                  <input type="email" class="form-control w-100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Name" name="name">
+                  <input class="form-control w-100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Name" name="p_name" required>
                   <small id="emailHelp" class="form-text text-muted">Enter your name, ensuring it is the same identifier throughout the experiment.</small>
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input type="input" class="input form-control w-100" id="exampleInputPassword1" placeholder="Password" name="pass">
+                  <label for="participant_password">Password</label>
+                  <input class="input form-control w-100" id="participant_password" placeholder="Password" name="p_pass" required>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Submit</button>
               </form>
@@ -64,6 +66,10 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.js"></script>
     <script src="src/index.js"></script>
     <script>
+      $('#participant_password').keydown(function(event) { 
+        return false;
+      });
+
      let Keyboard = window.SimpleKeyboard.default;
 
 let keyboard = new Keyboard({

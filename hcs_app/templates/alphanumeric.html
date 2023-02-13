@@ -45,21 +45,30 @@
             </div>
         </div>
         <br />
-        <div class="simple-keyboard mt-3"></div>
+          <div class="simple-keyboard-main simple-keyboard hg-theme-default hg-layout-default hg-layout-default mt-3"></div>
+          
 
         <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.js"></script>
-        <script src="src/index.js"></script>
         <script>
           $('#participant_password').keydown(function(event) { 
             return false;
           });
 
-          const Keyboard = window.SimpleKeyboard.default;
+          let Keyboard = window.SimpleKeyboard.default;
 
-const myKeyboard = new Keyboard({
+let keyboard = new Keyboard({
   onChange: input => onChange(input),
   onKeyPress: button => onKeyPress(button)
 });
+
+/**
+ * Update simple-keyboard when input is changed directly
+ */
+document.querySelector(".input").addEventListener("input", event => {
+  keyboard.setInput(event.target.value);
+});
+
+console.log(keyboard);
 
 function onChange(input) {
   document.querySelector(".input").value = input;
@@ -68,7 +77,23 @@ function onChange(input) {
 
 function onKeyPress(button) {
   console.log("Button pressed", button);
+
+  /**
+   * If you want to handle the shift and caps lock buttons
+   */
+  if (button === "{shift}" || button === "{lock}") handleShift();
 }
+
+function handleShift() {
+  let currentLayout = keyboard.options.layoutName;
+  let shiftToggle = currentLayout === "default" ? "shift" : "default";
+
+  keyboard.setOptions({
+    layoutName: shiftToggle
+  });
+}
+
+
         </script>
     </div>
 

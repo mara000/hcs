@@ -16,6 +16,8 @@ def randomExperiment(request):
     if request.method == "POST":
         if request.POST['pages'] == "":
 
+            print()
+
             if request.POST['p_name']:
                 newuser = Participant(
                     firstname = request.POST['p_name'],

@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css">
   </head>
 
@@ -39,6 +40,8 @@
                 <div class="form-group">
                   <label for="participant_password">Password</label>
                   <input class="input form-control w-100" id="participant_password" placeholder="Password" name="p_pass" required>
+                  <button type="button" class="btn" style="margin-top: 5px; width: 100%;" id="time_to_crack"></button>
+                  <center><small id="password_strength" style="margin-top: 4px; width:100%;"></small></center>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Submit</button>
               </form>
@@ -73,6 +76,34 @@ console.log(keyboard);
 function onChange(input) {
   document.querySelector(".input").value = input;
   console.log("Input changed", input);
+  $.ajax({
+    type: 'POST',
+    url: "{% url 'check_strength' %}",
+    data: { 'password': input },
+    dataType: 'json',
+    success: function (response) {
+      $('#time_to_crack').html("Time to crack: " + response  + " hours.")
+      if(response < 720){
+        $('#time_to_crack').css("background","#E34234");
+        $('#time_to_crack').css("color","white");
+        $('#password_strength').html("Low Strength")
+      } else if (response > 720 && response < 100000){
+        $('#time_to_crack').css("background","#e69138");
+        $('#time_to_crack').css("color","white");
+        $('#password_strength').html("Medium Strength")
+      } else {
+        $('#time_to_crack').css("background","#6aa84f");
+        $('#time_to_crack').css("color","white");
+        $('#password_strength').html("High Strength")
+      }
+    },
+    error: function (response) {
+      console.log("error")
+    }
+
+})
+
+
 }
 
 function onKeyPress(button) {

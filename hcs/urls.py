@@ -23,5 +23,6 @@ urlpatterns = [
     path('begin-experiment/', views.randomExperiment, name="random_experiment"),
     path('show-display/<str:display_name>', views.showDisplay, name="show_display"),
     path('results/', views.showResults, name="show_results"),
+    path('strength/', views.checkPasswordStrength, name="check_strength"),
 
 ]
